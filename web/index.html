@@ -11,7 +11,38 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
+		 function mostrarTodos() {
 
+                peticion_http = new XMLHttpRequest();
+
+                peticion_http.onreadystatechange = listaTodo;
+                peticion_http.open('GET', './libros.xml', true);
+                peticion_http.send(null);
+            }
+
+            function listaTodo() {
+
+                var titulo = "";
+                var txt = "";
+                var longitud = 0;
+                var txt2 = "";
+
+                if (peticion_http.readyState == 4) {
+                    if (peticion_http.status == 200) {
+                        var documento_xml = peticion_http.responseXML;
+                        var x = documento_xml.getElementsByTagName("Titulo");
+
+                        longitud = x.length;
+
+                        for (var y = 0; y < longitud; y++) {
+                            titulo = x[y].firstChild.nodeValue;
+                            txt = txt + titulo + "<br>";
+                        }
+                        txt2 = txt;
+                        document.getElementById("respuesta").innerHTML = txt2;
+                    }
+                }
+            }
         </script>
 
     </head>
